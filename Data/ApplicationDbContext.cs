@@ -14,4 +14,5 @@ using DemoMVC.Models;
 
         public DbSet<Student> Student { get; set; } = default!;
         public DbSet<Faculty> Faculty { get; set; } = default!;
+        public DbSet<Employee> Employee { get; set; } = default!;
     }
