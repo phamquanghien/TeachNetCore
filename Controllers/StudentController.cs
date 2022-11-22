@@ -47,7 +47,7 @@ namespace DemoMVC.Controllers
         // GET: Student/Create
         public IActionResult Create()
         {
-            ViewData["FacultyID"] = new SelectList(_context.Faculty, "FacultyID", "FacultyID");
+            ViewData["FacultyID"] = new SelectList(_context.Faculty, "FacultyID", "FacultyName");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace DemoMVC.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FacultyID"] = new SelectList(_context.Faculty, "FacultyID", "FacultyID", student.FacultyID);
+            ViewData["FacultyID"] = new SelectList(_context.Faculty, "FacultyID", "FacultyName", student.FacultyID);
             return View(student);
         }
 

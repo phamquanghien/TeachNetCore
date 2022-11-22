@@ -6,102 +6,90 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DemoMVC.Models;
-using DemoMVC.Models.Process;
 
 namespace DemoMVC.Controllers
 {
-    public class FacultyController : Controller
+    public class PersonController : Controller
     {
         private readonly ApplicationDbContext _context;
-        StringProcess strPro = new StringProcess();
 
-        public FacultyController(ApplicationDbContext context)
+        public PersonController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Faculty
+        // GET: Person
         public async Task<IActionResult> Index()
         {
-              return _context.Faculty != null ? 
-                          View(await _context.Faculty.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Faculty'  is null.");
+              return _context.Person != null ? 
+                          View(await _context.Person.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Person'  is null.");
         }
 
-        // GET: Faculty/Details/5
+        // GET: Person/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Faculty == null)
+            if (id == null || _context.Person == null)
             {
                 return NotFound();
             }
 
-            var faculty = await _context.Faculty
-                .FirstOrDefaultAsync(m => m.FacultyID == id);
-            if (faculty == null)
+            var person = await _context.Person
+                .FirstOrDefaultAsync(m => m.PersonId == id);
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return View(faculty);
+            return View(person);
         }
 
-        // GET: Faculty/Create
+        // GET: Person/Create
         public IActionResult Create()
         {
-            //tra ve ma sinh tu dong ve view va gan the input
-            var newFacultyKey = "FCT001";
-            var countFaculty = _context.Faculty.Count();
-            if(countFaculty > 0)
-            {
-                //lay ra ban ghi moi nhat => ma moi nhat
-                var id = _context.Faculty.OrderByDescending(m => m.FacultyID).First().FacultyID;
-                newFacultyKey = strPro.AutoGenerateCode(id);
-            }
-            ViewBag.newID = newFacultyKey;
             return View();
         }
 
-        // POST: Faculty/Create
+        // POST: Person/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FacultyID,FacultyName")] Faculty faculty)
+        public async Task<IActionResult> Create([Bind("PersonId,FullName")] Person person)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(faculty);
+                _context.Add(person);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(faculty);
+            return View(person);
         }
 
-        // GET: Faculty/Edit/5
+        // GET: Person/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Faculty == null)
+            if (id == null || _context.Person == null)
             {
                 return NotFound();
             }
 
-            var faculty = await _context.Faculty.FindAsync(id);
-            if (faculty == null)
+            var person = await _context.Person.FindAsync(id);
+            if (person == null)
             {
                 return NotFound();
             }
-            return View(faculty);
+            return View(person);
         }
 
-        // POST: Faculty/Edit/5
+        // POST: Person/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("FacultyID,FacultyName")] Faculty faculty)
+        public async Task<IActionResult> Edit(string id, [Bind("PersonId,FullName")] Person person)
         {
-            if (id != faculty.FacultyID)
+            if (id != person.PersonId)
             {
                 return NotFound();
             }
@@ -110,12 +98,12 @@ namespace DemoMVC.Controllers
             {
                 try
                 {
-                    _context.Update(faculty);
+                    _context.Update(person);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FacultyExists(faculty.FacultyID))
+                    if (!PersonExists(person.PersonId))
                     {
                         return NotFound();
                     }
@@ -126,49 +114,49 @@ namespace DemoMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(faculty);
+            return View(person);
         }
 
-        // GET: Faculty/Delete/5
+        // GET: Person/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Faculty == null)
+            if (id == null || _context.Person == null)
             {
                 return NotFound();
             }
 
-            var faculty = await _context.Faculty
-                .FirstOrDefaultAsync(m => m.FacultyID == id);
-            if (faculty == null)
+            var person = await _context.Person
+                .FirstOrDefaultAsync(m => m.PersonId == id);
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return View(faculty);
+            return View(person);
         }
 
-        // POST: Faculty/Delete/5
+        // POST: Person/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Faculty == null)
+            if (_context.Person == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Faculty'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Person'  is null.");
             }
-            var faculty = await _context.Faculty.FindAsync(id);
-            if (faculty != null)
+            var person = await _context.Person.FindAsync(id);
+            if (person != null)
             {
-                _context.Faculty.Remove(faculty);
+                _context.Person.Remove(person);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FacultyExists(string id)
+        private bool PersonExists(string id)
         {
-          return (_context.Faculty?.Any(e => e.FacultyID == id)).GetValueOrDefault();
+          return (_context.Person?.Any(e => e.PersonId == id)).GetValueOrDefault();
         }
     }
 }

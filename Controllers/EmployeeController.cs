@@ -9,6 +9,7 @@ namespace DemoMVC.Controllers
     {
         private readonly ApplicationDbContext _context;
         private ExcelProcess _excelProcess = new ExcelProcess();
+        private StringProcess strPro = new StringProcess();
         public EmployeeController(ApplicationDbContext context)
         {
             _context = context;
